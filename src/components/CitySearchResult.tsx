@@ -15,7 +15,9 @@ export default function CitySearchResult({
       onClick={onClick}
     >
       <div className="font-bold">{name}</div>
-      <div className="text-sm">{`${admin1} | ${country}`}</div>
+      <div className="text-sm">{`${
+        !!admin1 ? `${admin1} | ` : ''
+      }${country}`}</div>
       <div className="grid grid-cols-3 "></div>
     </div>
   );

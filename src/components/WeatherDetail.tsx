@@ -4,18 +4,12 @@ import { City } from './CitySearch';
 import {
   WeatherAPIData,
   transformWeatherAPIData,
+  sameDay,
 } from '../helpers/weatherData';
+import WeatherHourColumn from './WeatherHourColumn';
 
 interface WeatherDetailProps {
   city: City | undefined;
-}
-
-function sameDay(date1: Date, date2: Date) {
-  return (
-    date1.getDate() === date2.getDate() &&
-    date1.getMonth() === date2.getMonth() &&
-    date1.getFullYear() === date2.getFullYear()
-  );
 }
 
 export default function WeatherDetail({ city }: WeatherDetailProps) {
@@ -34,18 +28,22 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
 
   if (!city)
     return (
-      <div className="text-slate-400">Select city to display its weather</div>
+      <div className="p-8 text-slate-400">
+        Select city to display its weather
+      </div>
     );
 
   if (isLoading)
     return (
-      <div className="animate-pulse text-slate-400">
+      <div className="animate-pulse p-8 text-slate-400">
         Loading weather data...
       </div>
     );
 
   if (isError)
-    return <div className="text-red-400">Error loading weather data...</div>;
+    return (
+      <div className="p-8 text-red-400">Error loading weather data...</div>
+    );
 
   const temperatureUnit = data.hourly_units.temperature_2m;
   const rainUnit = data.hourly_units.rain;
@@ -55,9 +53,13 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
 
   return (
     <div>
-      <h2 className=" text-4xl font-bold">{city.name}</h2>
-      <div className="mb-2 ">{`${city.admin1} | ${city.country}`}</div>
-      <div className="mb-6">
+      <div className="sticky top-0 z-10 px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75">
+        <h2 className=" text-4xl font-bold">{city.name}</h2>
+        <div>{`${!!city.admin1 ? `${city.admin1} | ` : ''}${
+          city.country
+        }`}</div>
+      </div>
+      <div className="px-8 py-4">
         {dates.map((date, dateKey) => {
           return (
             <div className="mb-4" key={dateKey}>
@@ -65,18 +67,18 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
                 {new Date(date).toLocaleDateString()}
               </h3>
               <div className="overflow-y-scroll">
-                <div className=" grid grid-flow-col gap-5 pt-2 pb-4">
+                <div className="inline-grid grid-flow-col gap-4 pt-2 pb-4">
                   {weather.has(date) &&
-                    weather.get(date)?.map((hourData, hourKey) => (
-                      <div
-                        className="flex w-16 flex-col items-center"
-                        key={hourKey}
-                      >
-                        <div>{hourData.hour}</div>
-                        <div>{`${hourData.temperature}${temperatureUnit}`}</div>
-                        <div>{`${hourData.rain}${rainUnit}`}</div>
-                      </div>
-                    ))}
+                    weather
+                      .get(date)
+                      ?.map((hourData, hourKey) => (
+                        <WeatherHourColumn
+                          key={hourKey}
+                          hour={hourData.hour}
+                          temperature={hourData.temperature}
+                          rain={hourData.rain}
+                        />
+                      ))}
                 </div>
               </div>
             </div>

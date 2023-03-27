@@ -10,7 +10,7 @@ export interface City {
   latitude: number;
   longitude: number;
   country: string;
-  admin1: string;
+  admin1: string | undefined;
 }
 
 interface CitySearchProps {

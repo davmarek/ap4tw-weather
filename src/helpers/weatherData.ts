@@ -58,8 +58,12 @@ export function transformWeatherAPIData(
       // the hour data (+ 1 hour) is in the past
       if (hourDate.valueOf() + 3_600_000 < now.valueOf()) continue;
 
+      const hourString = sameHour(hourDate, now)
+        ? 'Nyní'
+        : hourDate.getHours().toString();
+
       hours.push({
-        hour: hourDate.getHours().toString(),
+        hour: hourString,
         temperature: data.hourly.temperature_2m[j],
         rain: data.hourly.rain[j],
       });
@@ -69,4 +73,17 @@ export function transformWeatherAPIData(
   }
 
   return weather;
+}
+
+export function sameDay(date1: Date, date2: Date) {
+  return (
+    date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear()
+  );
+}
+
+export function sameHour(date1: Date, date2: Date) {
+  console.log('Same hour', date1, date2);
+  return date1.getHours() === date2.getHours() && sameDay(date1, date2);
 }
