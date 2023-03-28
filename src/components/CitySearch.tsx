@@ -28,7 +28,7 @@ export default function CitySearch({ onCitySelect }: CitySearchProps) {
     ['cities', searchCityQuery.trim()],
     async () => {
       const res = await axios.get(
-        `https://geocoding-api.open-meteo.com/v1/search?count=5&name=${searchCityQuery.trim()}`
+        `https://geocoding-api.open-meteo.com/v1/search?count=8&name=${searchCityQuery.trim()}`
       );
       return res.data;
     },
