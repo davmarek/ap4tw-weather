@@ -4,7 +4,7 @@ import { City } from './CitySearch';
 import {
   WeatherAPIData,
   transformWeatherAPIData,
-  sameDay,
+  getMinMaxTemperature,
 } from '../helpers/weatherData';
 import WeatherHourColumn from './WeatherHourColumn';
 
@@ -45,20 +45,29 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
       <div className="p-8 text-red-400">Error loading weather data...</div>
     );
 
-  const temperatureUnit = data.hourly_units.temperature_2m;
-  const rainUnit = data.hourly_units.rain;
-
   const weather = transformWeatherAPIData(data);
   const dates = Array.from(weather.keys());
 
+  const weatherToday = Array.from(weather.values())[0];
+  const weatherNow = weatherToday[0];
+
+  const { min: weatherMin, max: weatherMax } =
+    getMinMaxTemperature(weatherToday);
+
   return (
     <div>
-      <div className="sticky top-0 z-10 px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75">
+      <div className="top-0 z-10 px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75 lg:sticky">
         <h2 className=" text-4xl font-bold">{city.name}</h2>
-        <div>{`${!!city.admin1 ? `${city.admin1} | ` : ''}${
-          city.country
-        }`}</div>
+        <div>
+          {!!city.admin1 ? `${city.admin1} | ` : ''}
+          {city.country}
+        </div>
+        <div className="text-5xl font-light">
+          {`${weatherNow.temperature}°`}
+          <span className="text-sm">{`${weatherMin}° | ${weatherMax}°`}</span>
+        </div>
       </div>
+
       <div className="px-8 py-4">
         {dates.map((date, dateKey) => {
           return (
@@ -66,7 +75,7 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
               <h3 className="font-semibold">
                 {new Date(date).toLocaleDateString()}
               </h3>
-              <div className="overflow-y-scroll">
+              <div className="overflow-x-auto">
                 <div className="inline-grid grid-flow-col gap-4 pt-2 pb-4">
                   {weather.has(date) &&
                     weather

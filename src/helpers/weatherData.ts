@@ -84,6 +84,20 @@ export function sameDay(date1: Date, date2: Date) {
 }
 
 export function sameHour(date1: Date, date2: Date) {
-  console.log('Same hour', date1, date2);
   return date1.getHours() === date2.getHours() && sameDay(date1, date2);
+}
+
+export function getMinMaxTemperature(weatherHours: WeatherHour[]) {
+  let min = weatherHours[0].temperature;
+  let max = weatherHours[0].temperature;
+
+  weatherHours.forEach((hour) => {
+    if (hour.temperature > max) {
+      max = hour.temperature;
+    } else if (hour.temperature < min) {
+      min = hour.temperature;
+    }
+  });
+
+  return { min, max };
 }

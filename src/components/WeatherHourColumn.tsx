@@ -15,7 +15,9 @@ export default function WeatherHourColumn({
     <div className="flex w-16 flex-col items-center gap-1">
       <div>{hour}</div>
       <div>{`${temperature}°`}</div>
-      <div className={`${rain > 0 ? '' : 'opacity-40'}`}>
+      <div
+        className={`${rain > 0 ? 'text-blue-300 opacity-80' : 'opacity-40'}`}
+      >
         {rain}
         <span className="text-xs">{rainUnit}</span>
       </div>
