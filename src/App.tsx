@@ -1,5 +1,9 @@
 import { ChangeEvent, useState } from 'react';
-import CitySearch, { City } from './components/CitySearch';
+import { useLocalStorage } from 'usehooks-ts';
+import CitySearch from './components/CitySearch';
+import { City } from './helpers/types';
+
+import FavouriteCities from './components/FavouriteCities';
 import WeatherDetail from './components/WeatherDetail';
 
 function App() {
@@ -12,8 +16,8 @@ function App() {
 
   return (
     <div className="grid h-full grid-cols-1 grid-rows-[auto_1fr] text-white md:grid-cols-3 md:grid-rows-1">
-      <div className="col-span-1 h-full bg-slate-900 px-4 py-6">
-        <div className="mb-4 flex items-center gap-3">
+      <div className="col-span-1 flex h-full flex-col gap-4 bg-slate-900 px-4 py-6">
+        <div className=" flex items-center gap-3">
           <img
             src="/favicon.png"
             alt="favicon"
@@ -25,6 +29,9 @@ function App() {
             <span className="text-xs">by David Marek</span>
           </h1>
         </div>
+
+        <FavouriteCities onCitySelect={handleCitySelect} />
+
         <CitySearch onCitySelect={handleCitySelect} />
       </div>
 

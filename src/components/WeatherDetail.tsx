@@ -1,20 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { City } from './CitySearch';
+
+import { City } from '../helpers/types';
 import {
   WeatherAPIData,
   transformWeatherAPIData,
   getMinMaxTemperature,
 } from '../helpers/weatherData';
+
 import WeatherHourColumn from './WeatherHourColumn';
+import AddToFavouritesButton from './AddToFavouritesButton';
 
 interface WeatherDetailProps {
   city: City | undefined;
 }
 
 export default function WeatherDetail({ city }: WeatherDetailProps) {
-  const now = new Date();
-
   const { data, isLoading, isError } = useQuery(
     ['weather', city?.latitude, city?.longitude],
     async (): Promise<WeatherAPIData> => {
@@ -56,16 +57,19 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
 
   return (
     <div>
-      <div className="top-0 z-10 px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75 lg:sticky">
-        <h2 className=" text-4xl font-bold">{city.name}</h2>
+      <div className="top-0 z-10 flex justify-between px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75 lg:sticky">
         <div>
-          {!!city.admin1 ? `${city.admin1} | ` : ''}
-          {city.country}
+          <h2 className=" text-4xl font-bold">{city.name}</h2>
+          <div>
+            {!!city.admin1 ? `${city.admin1} | ` : ''}
+            {city.country}
+          </div>
+          <div className="text-5xl font-light">
+            {`${weatherNow.temperature}°`}
+            <span className="text-sm">{`${weatherMin}° | ${weatherMax}°`}</span>
+          </div>
         </div>
-        <div className="text-5xl font-light">
-          {`${weatherNow.temperature}°`}
-          <span className="text-sm">{`${weatherMin}° | ${weatherMax}°`}</span>
-        </div>
+        <AddToFavouritesButton city={city} />
       </div>
 
       <div className="px-8 py-4">

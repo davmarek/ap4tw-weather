@@ -1,4 +1,4 @@
-import { City } from './CitySearch';
+import { City } from '../helpers/types';
 
 interface CitySearchResultProps {
   city: City;
