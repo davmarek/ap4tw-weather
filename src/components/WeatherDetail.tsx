@@ -6,6 +6,7 @@ import {
   WeatherAPIData,
   transformWeatherAPIData,
   getMinMaxTemperature,
+  sameDay,
 } from '../helpers/weatherData';
 
 import WeatherHourColumn from './WeatherHourColumn';
@@ -20,7 +21,7 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
     ['weather', city?.latitude, city?.longitude],
     async (): Promise<WeatherAPIData> => {
       const res = await axios.get(
-        `https://api.open-meteo.com/v1/forecast?latitude=${city?.latitude}&longitude=${city?.longitude}&hourly=temperature_2m,rain`
+        `https://api.open-meteo.com/v1/forecast?current_weather=true&latitude=${city?.latitude}&longitude=${city?.longitude}&hourly=temperature_2m,rain`
       );
       return res.data;
     },
@@ -46,6 +47,8 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
       <div className="p-8 text-red-400">Error loading weather data...</div>
     );
 
+  const now = new Date();
+
   const weather = transformWeatherAPIData(data);
   const dates = Array.from(weather.keys());
 
@@ -57,7 +60,7 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
 
   return (
     <div>
-      <div className="top-0 z-10 flex justify-between px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75 lg:sticky">
+      <div className="top-0 z-10 flex justify-between px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75 md:sticky">
         <div>
           <h2 className=" text-4xl font-bold">{city.name}</h2>
           <div>
@@ -65,7 +68,7 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
             {city.country}
           </div>
           <div className="text-5xl font-light">
-            {`${weatherNow.temperature}°`}
+            {`${data.current_weather.temperature}°`}
             <span className="text-sm">{`${weatherMin}° | ${weatherMax}°`}</span>
           </div>
         </div>
@@ -73,11 +76,13 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
       </div>
 
       <div className="px-8 py-4">
+        <h2 className="mb-1 text-lg font-bold">Forecast</h2>
         {dates.map((date, dateKey) => {
           return (
             <div className="mb-4" key={dateKey}>
               <h3 className="font-semibold">
                 {new Date(date).toLocaleDateString()}
+                {sameDay(new Date(date), now) ? ' (today)' : ''}
               </h3>
               <div className="overflow-x-auto">
                 <div className="inline-grid grid-flow-col gap-4 pt-2 pb-4">

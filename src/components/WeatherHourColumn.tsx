@@ -13,10 +13,12 @@ export default function WeatherHourColumn({
 }: WeatherHourColumn) {
   return (
     <div className="flex w-16 flex-col items-center gap-1">
-      <div>{hour}</div>
+      <div className="text-slate-400">{hour}</div>
       <div>{`${temperature}°`}</div>
       <div
-        className={`${rain > 0 ? 'text-blue-300 opacity-80' : 'opacity-40'}`}
+        className={`${
+          rain > 0 ? 'text-blue-300 opacity-80' : 'text-slate-500'
+        }`}
       >
         {rain}
         <span className="text-xs">{rainUnit}</span>

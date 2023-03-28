@@ -45,7 +45,7 @@ export default function CitySearch({ onCitySelect }: CitySearchProps) {
           value={searchCityQuery}
           onChange={handleInputChange}
           onFocus={handleInputChange}
-          placeholder="Vyhledejte město..."
+          placeholder="Search for city..."
         />
         {isError && <div>Error loading data</div>}
         {isLoading && searchCityQuery.length > 0 && <div>Loading data</div>}

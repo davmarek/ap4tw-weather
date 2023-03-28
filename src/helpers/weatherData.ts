@@ -8,6 +8,7 @@ export interface WeatherAPIData {
   elevation: number;
   hourly_units: HourlyUnits;
   hourly: Hourly;
+  current_weather: CurrentWeather;
 }
 
 interface HourlyUnits {
@@ -20,6 +21,11 @@ interface Hourly {
   time: string[];
   temperature_2m: number[];
   rain: number[];
+}
+
+interface CurrentWeather {
+  temperature: number;
+  time: string;
 }
 
 interface WeatherHour {
@@ -59,7 +65,7 @@ export function transformWeatherAPIData(
       if (hourDate.valueOf() + 3_600_000 < now.valueOf()) continue;
 
       const hourString = sameHour(hourDate, now)
-        ? 'Nyní'
+        ? 'Now'
         : hourDate.getHours().toString();
 
       hours.push({

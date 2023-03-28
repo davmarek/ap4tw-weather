@@ -1,5 +1,4 @@
-import { ChangeEvent, useState } from 'react';
-import { useLocalStorage } from 'usehooks-ts';
+import { useState } from 'react';
 import CitySearch from './components/CitySearch';
 import { City } from './helpers/types';
 
