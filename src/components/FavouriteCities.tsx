@@ -20,7 +20,11 @@ export default function FavouriteCities({
   }
 
   function handleCityRemove(city: City) {
-    setFavouriteCities(removeCityFromFavourites(city, favouriteCities));
+    if (
+      confirm(`Do you really want to remove ${city?.name} from favourites?`)
+    ) {
+      setFavouriteCities(removeCityFromFavourites(city, favouriteCities));
+    }
   }
 
   if (favouriteCities.length <= 0) return null;

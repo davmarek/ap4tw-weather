@@ -4,13 +4,28 @@ import { City } from './helpers/types';
 
 import FavouriteCities from './components/FavouriteCities';
 import WeatherDetail from './components/WeatherDetail';
+import { NewspaperIcon } from '@heroicons/react/24/outline';
 
 function App() {
   const [city, setCity] = useState<City>();
 
-  function handleCitySelect(city: City) {
-    console.log(city);
-    setCity(city);
+  function handleCitySelect(newCity: City) {
+    // if no city is selected
+    if (!city) {
+      setCity(newCity);
+      return;
+    }
+
+    // if the selected city is already displayed (selected)
+    if (
+      newCity.id == city?.id &&
+      newCity.latitude == city?.latitude &&
+      newCity.longitude == city?.longitude
+    ) {
+      return;
+    }
+
+    setCity(newCity);
   }
 
   return (

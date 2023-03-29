@@ -60,7 +60,8 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
 
   return (
     <div>
-      <div className="top-0 z-10 flex justify-between px-8 pt-6 pb-4 backdrop-blur-md backdrop-brightness-75 md:sticky">
+      {/* CURRENT WEATHER */}
+      <div className="top-0 z-10 flex justify-between px-8 pt-4 pb-4 backdrop-blur-md backdrop-brightness-75 md:sticky md:pt-6">
         <div>
           <h2 className=" text-4xl font-bold">{city.name}</h2>
           <div>
