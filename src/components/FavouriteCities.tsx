@@ -1,7 +1,7 @@
+import { TrashIcon } from '@heroicons/react/24/outline';
 import { useLocalStorage } from 'usehooks-ts';
 import { removeCityFromFavourites } from '../helpers/favouriteCities';
 import { City } from '../helpers/types';
-import { TrashIcon } from '@heroicons/react/24/outline';
 
 interface FavouriteCitiesProps {
   onCitySelect: (city: City) => void;

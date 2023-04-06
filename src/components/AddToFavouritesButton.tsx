@@ -1,12 +1,12 @@
+import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
+import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
+import toast from 'react-hot-toast';
+import { useLocalStorage } from 'usehooks-ts';
 import {
   cityIsInFavourites,
   removeCityFromFavourites,
 } from '../helpers/favouriteCities';
 import { City } from '../helpers/types';
-import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
-import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
-import { useLocalStorage } from 'usehooks-ts';
-import toast from 'react-hot-toast';
 
 interface AddToFavouritesButtonProps {
   city: City;

@@ -3,14 +3,14 @@ import axios from 'axios';
 
 import { City } from '../helpers/types';
 import {
-  WeatherAPIData,
-  transformWeatherAPIData,
   getMinMaxTemperature,
   sameDay,
+  transformWeatherAPIData,
+  WeatherAPIData,
 } from '../helpers/weatherData';
 
-import WeatherHourColumn from './WeatherHourColumn';
 import AddToFavouritesButton from './AddToFavouritesButton';
+import WeatherHourColumn from './WeatherHourColumn';
 
 interface WeatherDetailProps {
   city: City | undefined;

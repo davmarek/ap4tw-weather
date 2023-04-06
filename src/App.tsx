@@ -4,7 +4,6 @@ import { City } from './helpers/types';
 
 import FavouriteCities from './components/FavouriteCities';
 import WeatherDetail from './components/WeatherDetail';
-import { NewspaperIcon } from '@heroicons/react/24/outline';
 
 function App() {
   const [city, setCity] = useState<City>();

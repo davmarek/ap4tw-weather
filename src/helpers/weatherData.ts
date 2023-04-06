@@ -39,8 +39,10 @@ export function transformWeatherAPIData(
 ): Map<string, WeatherHour[]> {
   const now = new Date();
 
+  // will be returned by this function
   const weather = new Map<string, WeatherHour[]>();
 
+  // filters all dates to only include only time 00:00
   const dates = data.hourly.time.filter((_, key) => key % 24 == 0);
 
   for (let i = 0; i < dates.length; i++) {

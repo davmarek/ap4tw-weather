@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
-import CitySearchResult from './CitySearchResult';
 import { City } from '../helpers/types';
+import CitySearchResult from './CitySearchResult';
 
 interface CitySearchProps {
   onCitySelect: (city: City) => void;
