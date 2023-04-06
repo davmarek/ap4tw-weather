@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { City } from '../helpers/types';
+import { City, WeatherAPIData } from '../helpers/types';
 import {
   getMinMaxTemperature,
   sameDay,
   transformWeatherAPIData,
-  WeatherAPIData,
 } from '../helpers/weatherData';
 
 import AddToFavouritesButton from './AddToFavouritesButton';

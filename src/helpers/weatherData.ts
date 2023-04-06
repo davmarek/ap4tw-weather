@@ -1,38 +1,4 @@
-export interface WeatherAPIData {
-  latitude: number;
-  longitude: number;
-  generationtime_ms: number;
-  utc_offset_seconds: number;
-  timezone: string;
-  timezone_abbreviation: string;
-  elevation: number;
-  hourly_units: HourlyUnits;
-  hourly: Hourly;
-  current_weather: CurrentWeather;
-}
-
-interface HourlyUnits {
-  time: string;
-  temperature_2m: string;
-  rain: string;
-}
-
-interface Hourly {
-  time: string[];
-  temperature_2m: number[];
-  rain: number[];
-}
-
-interface CurrentWeather {
-  temperature: number;
-  time: string;
-}
-
-interface WeatherHour {
-  hour: string;
-  temperature: number;
-  rain: number;
-}
+import { WeatherAPIData, WeatherHour } from './types';
 
 export function transformWeatherAPIData(
   data: WeatherAPIData
