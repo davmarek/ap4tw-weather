@@ -27,4 +27,4 @@ All source code is located in `src/`:
 - helper functions and TypeScript types are in `src/helpers/`
 
 # Other info
-Project uses _Vite_ with **_React_**. Entire app is styped with **_TailwindCSS_**. Fetching is done through _Axios_. **_React Query_** is used for easier async state management, caching and debugging.
+Project uses _Vite_ with **_React_**. Entire app is styped with **_TailwindCSS_**. Fetching is done through **_React Query_** for easier async state management, caching and debugging.

@@ -10,6 +10,7 @@ interface FavouriteCitiesProps {
 export default function FavouriteCities({
   onCitySelect,
 }: FavouriteCitiesProps) {
+  // list of favourite cities stored in local storage
   const [favouriteCities, setFavouriteCities] = useLocalStorage<City[]>(
     'favouriteCities',
     []
@@ -19,6 +20,7 @@ export default function FavouriteCities({
     onCitySelect(city);
   }
 
+  // click on the "trash" icon next to each city in the list
   function handleCityRemove(city: City) {
     if (
       confirm(`Do you really want to remove ${city?.name} from favourites?`)

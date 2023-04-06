@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 
-import { City, WeatherAPIData } from '../helpers/types';
+import { City, WeatherAPIData, WeatherHour } from '../helpers/types';
 import {
   getMinMaxTemperature,
   sameDay,
@@ -19,10 +18,10 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
   const { data, isLoading, isError } = useQuery(
     ['weather', city?.latitude, city?.longitude],
     async (): Promise<WeatherAPIData> => {
-      const res = await axios.get(
+      const res = await fetch(
         `https://api.open-meteo.com/v1/forecast?current_weather=true&latitude=${city?.latitude}&longitude=${city?.longitude}&hourly=temperature_2m,rain`
       );
-      return res.data;
+      return await res.json();
     },
     { staleTime: 60_000 * 2, enabled: !!city }
   );
@@ -51,16 +50,15 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
   const weather = transformWeatherAPIData(data);
   const dates = Array.from(weather.keys());
 
-  const weatherToday = Array.from(weather.values())[0];
-  const weatherNow = weatherToday[0];
+  const weatherHoursToday: WeatherHour[] = Array.from(weather.values())[0];
 
-  const { min: weatherMin, max: weatherMax } =
-    getMinMaxTemperature(weatherToday);
+  const { min: weatherNowMin, max: weatherNowMax } =
+    getMinMaxTemperature(weatherHoursToday);
 
   return (
     <div>
       {/* CURRENT WEATHER */}
-      <div className="top-0 z-10 flex justify-between px-8 pt-4 pb-4 backdrop-blur-md backdrop-brightness-75 md:sticky md:pt-6">
+      <div className="top-0 z-10 flex justify-between px-8 pb-4 pt-4 backdrop-blur-md backdrop-brightness-75 md:sticky md:pt-6">
         <div>
           <h2 className=" text-4xl font-bold">{city.name}</h2>
           <div>
@@ -69,7 +67,7 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
           </div>
           <div className="text-5xl font-light">
             {`${data.current_weather.temperature}°`}
-            <span className="text-sm">{`${weatherMin}° | ${weatherMax}°`}</span>
+            <span className="text-sm">{`${weatherNowMin}° | ${weatherNowMax}°`}</span>
           </div>
         </div>
         <AddToFavouritesButton city={city} />
@@ -85,7 +83,7 @@ export default function WeatherDetail({ city }: WeatherDetailProps) {
                 {sameDay(new Date(date), now) ? ' (today)' : ''}
               </h3>
               <div className="overflow-x-auto">
-                <div className="inline-grid grid-flow-col gap-4 pt-2 pb-4">
+                <div className="inline-grid grid-flow-col gap-4 pb-4 pt-2">
                   {weather.has(date) &&
                     weather
                       .get(date)

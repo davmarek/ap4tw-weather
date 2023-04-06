@@ -14,6 +14,7 @@ interface AddToFavouritesButtonProps {
 export default function AddToFavouritesButton({
   city,
 }: AddToFavouritesButtonProps) {
+  // list of favourite cities stored in local storage
   const [favouriteCities, setFavouriteCities] = useLocalStorage<City[]>(
     'favouriteCities',
     []

@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
 import { ChangeEvent, useState } from 'react';
 import { City } from '../helpers/types';
 import CitySearchResult from './CitySearchResult';
@@ -12,12 +11,14 @@ export default function CitySearch({ onCitySelect }: CitySearchProps) {
   const [searchCityQuery, setCitySearchQuery] = useState('');
   const [displayResults, setDisplayResults] = useState(true);
 
+  // when user types something in the <input>
   function handleInputChange(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
     setCitySearchQuery(e.target.value);
     setDisplayResults(true);
   }
 
+  // when user clicks some city
   function handleCitySelect(city: City) {
     setCitySearchQuery(searchCityQuery.trim());
     setDisplayResults(false);
@@ -27,10 +28,11 @@ export default function CitySearch({ onCitySelect }: CitySearchProps) {
   const { data, isLoading, isError } = useQuery(
     ['cities', searchCityQuery.trim()],
     async () => {
-      const res = await axios.get(
+      const res = await fetch(
         `https://geocoding-api.open-meteo.com/v1/search?count=8&name=${searchCityQuery.trim()}`
       );
-      return res.data;
+
+      return await res.json();
     },
     { staleTime: 60_000 * 2, enabled: searchCityQuery.trim().length > 0 }
   );
