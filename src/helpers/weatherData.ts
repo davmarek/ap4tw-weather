@@ -18,7 +18,7 @@ export function transformWeatherAPIData(
     // example: date = 1.4.2023 00:00 -> endDate = 2.4.2023 00:00
     const endDate = new Date(date.valueOf() + 86_400_000);
 
-    // if the end of this day isnt behind now
+    // if the end of this day isn't behind now
     // example:
     // now = 1.1.2023 23:59
     // endDate = 2.1.2023 00:00
@@ -62,16 +62,15 @@ export function sameHour(date1: Date, date2: Date) {
 }
 
 export function getMinMaxTemperature(weatherHours: WeatherHour[]) {
-  let min = weatherHours[0].temperature;
-  let max = weatherHours[0].temperature;
-
-  weatherHours.forEach((hour) => {
-    if (hour.temperature > max) {
-      max = hour.temperature;
-    } else if (hour.temperature < min) {
-      min = hour.temperature;
-    }
-  });
+  const { min, max } = weatherHours.reduce(
+    ({ min, max }, { temperature }) => {
+      return {
+        min: temperature < min ? temperature : min,
+        max: temperature > max ? temperature : max,
+      };
+    },
+    { min: weatherHours[0].temperature, max: weatherHours[0].temperature }
+  );
 
   return { min, max };
 }

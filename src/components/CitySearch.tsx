@@ -1,14 +1,20 @@
 import { useQuery } from '@tanstack/react-query';
 import { ChangeEvent, useState } from 'react';
+import { useDebounce } from 'usehooks-ts';
 import { City } from '../helpers/types';
 import CitySearchResult from './CitySearchResult';
 
 interface CitySearchProps {
+  // callback function, when user clicks a city
   onCitySelect: (city: City) => void;
 }
 
 export default function CitySearch({ onCitySelect }: CitySearchProps) {
+  // realtime search input
   const [searchCityQuery, setCitySearchQuery] = useState('');
+  // debounced/lazy seach input (default timeout = 500ms)
+  const debouncedSearchCityQuery = useDebounce(searchCityQuery.trim());
+  // helper bool for hiding city search results when user selects a city
   const [displayResults, setDisplayResults] = useState(true);
 
   // when user types something in the <input>
@@ -20,21 +26,24 @@ export default function CitySearch({ onCitySelect }: CitySearchProps) {
 
   // when user clicks some city
   function handleCitySelect(city: City) {
+    // trim spaces from input
     setCitySearchQuery(searchCityQuery.trim());
+    // hide city search results
     setDisplayResults(false);
+    // callback
     onCitySelect(city);
   }
 
   const { data, isLoading, isError } = useQuery(
-    ['cities', searchCityQuery.trim()],
+    ['cities', debouncedSearchCityQuery],
     async () => {
       const res = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?count=8&name=${searchCityQuery.trim()}`
+        `https://geocoding-api.open-meteo.com/v1/search?count=8&name=${debouncedSearchCityQuery}`
       );
 
       return await res.json();
     },
-    { staleTime: 60_000 * 2, enabled: searchCityQuery.trim().length > 0 }
+    { staleTime: 60_000 * 2, enabled: debouncedSearchCityQuery.length > 0 }
   );
 
   return (
@@ -50,7 +59,9 @@ export default function CitySearch({ onCitySelect }: CitySearchProps) {
           placeholder="Search for city..."
         />
         {isError && <div>Error loading data</div>}
-        {isLoading && searchCityQuery.length > 0 && <div>Loading data</div>}
+        {isLoading && debouncedSearchCityQuery.length > 0 && (
+          <div>Loading data</div>
+        )}
         {displayResults && !isError && !isLoading && !!data && (
           <div className="overflow-clip rounded-md">
             {!!data?.results &&
@@ -62,7 +73,7 @@ export default function CitySearch({ onCitySelect }: CitySearchProps) {
                   onClick={() => handleCitySelect(city)}
                 />
               ))}
-            {!data?.results && searchCityQuery.length > 0 && (
+            {!data?.results && debouncedSearchCityQuery.length > 0 && (
               <div>No results</div>
             )}
           </div>
