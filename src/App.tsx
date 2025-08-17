@@ -48,7 +48,7 @@ function App() {
         <CitySearch onCitySelect={handleCitySelect} />
       </div>
 
-      <div className="col-span1 h-full bg-gradient-to-br from-slate-800 to-slate-900 md:col-span-2 md:overflow-y-scroll">
+      <div className="col-span1 h-full bg-linear-to-br from-slate-800 to-slate-900 md:col-span-2 md:overflow-y-scroll">
         <WeatherDetail city={city} />
       </div>
     </div>

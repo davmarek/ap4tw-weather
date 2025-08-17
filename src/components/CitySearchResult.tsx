@@ -11,7 +11,7 @@ export default function CitySearchResult({
 }: CitySearchResultProps) {
   return (
     <div
-      className="cursor-pointer bg-gradient-to-br from-slate-800 to-slate-900 px-4 py-3  hover:from-slate-700 hover:to-slate-800"
+      className="cursor-pointer bg-linear-to-br from-slate-800 to-slate-900 px-4 py-3  hover:from-slate-700 hover:to-slate-800"
       onClick={onClick}
     >
       <div className="font-bold">{name}</div>
